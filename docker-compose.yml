@@ -1,0 +1,25 @@
+# project’s root directory
+version: "3.8"
+
+services:
+  nginx:
+    build: requirements/nginx/
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./web:/var/www/html
+  wordpress:
+    build: requirements/wordpress/
+    container_name: wp-php
+    volumes:
+      - ./web:/var/www/html 
+      
+
+
+#docker compose up --build : build the Docker image from your Dockerfile Then it will start the container, and Nginx will run in the foreground
+#built your Nginx image using Debian as the base and installed Nginx.
+#we need to tell php that it needs to accept FastCGI request from address “wp-php:9000”, the localhost of our wordpress-php container at port 9000. in 41 line config
+
+#volumes : Because we are installing wordpress to the container that runs php, we need to actually have access to the hosting service aka nginx, so that we can access the wordpress pages
+#Docker created a web folder and it mounted the contents of /var/www/html to it.
