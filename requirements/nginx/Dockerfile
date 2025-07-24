@@ -1,19 +1,15 @@
 FROM debian:latest
 
-RUN apt update && apt upgrade && apt install -y \
-    nginx
-COPY default etc/nginx/sites-available 
+RUN apt update && apt upgrade -y && apt install -y \
+    nginx \
+    openssl
+
+RUN mkdir -p /etc/nginx/ssl && \
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /etc/nginx/ssl/imqandyl.42.fr.key \
+    -out /etc/nginx/ssl/imqandyl.42.fr.crt \
+    -subj "/CN=imqandyl.42.fr"
+
+COPY default /etc/nginx/sites-available/default
+
 CMD ["nginx", "-g", "daemon off;"]
-
-
-#copy them inside the containers
-
-
-
-#docker-compose up --build
-# docker ps /verify
-# docker-compose down
-# docker-compose up --build
-# docker ps
-# docker logs nginx
-# docker logs wp-php

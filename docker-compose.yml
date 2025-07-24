@@ -1,34 +1,59 @@
 # project’s root directory
 version: "3.8"
 
+networks:
+  inception:
+    name: inception
+
+# volumes:
+#   mariadb-data:
+#     name: mariadb-data
+#     driver: local
+#     driver_opts:
+#         type: none
+#         o: bind
+#         device: /Users/imqandyl/Desktop/Inception/data/database
+#   web-data:
+#     name: web-data
+#     driver: local
+#     driver_opts:
+#         type: none
+#         o: bind
+#         device: /Users/imqandyl/Desktop/Inception/data/web
+
 services:
   nginx:
     build: requirements/nginx/
     container_name: nginx
     ports:
-      - "80:80"
+      - "443:443"
     volumes:
-      - ./web:/var/www/html
+      - /Users/imqandyl/Desktop/Inception/data/web:/var/www/html
     networks:
       - inception # Ensure nginx is connected to the same network as other services
+    depends_on:
+      - wordpress
+  
   wordpress:
     build: requirements/wordpress/
     container_name: wp-php
     depends_on:
       - mariadb
     volumes:
-      - ./web:/var/www/html
+      - /Users/imqandyl/Desktop/Inception/data/web:/var/www/html
     networks:
       - inception
     environment: # Add environment variables for database connection
       WORDPRESS_DB_HOST: mariadb
-      WORDPRESS_DB_USER: root
-      WORDPRESS_DB_PASSWORD: example_password
+      WORDPRESS_DB_USER: wpuser
+      WORDPRESS_DB_PASSWORD: password
+      WORDPRESS_DB_NAME: wordpress
+
   mariadb:
     build: requirements/mariadb/
     container_name: mariadb
     volumes:
-      - mariadb_data:/var/lib/mysql
+      - /Users/imqandyl/Desktop/Inception/data/database:/var/lib/mysql
     networks:
       - inception
     environment: # Add environment variables for database setup
@@ -38,11 +63,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-networks:
-  inception:
-
-volumes:
-  mariadb_data:
 
 #docker compose up --build : build the Docker image from your Dockerfile Then it will start the container, and Nginx will run in the foreground
 #built your Nginx image using Debian as the base and installed Nginx.

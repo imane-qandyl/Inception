@@ -1,35 +1,45 @@
 #!/bin/bash
 
-# Wait for MariaDB to be ready
+# Wait for MariaDB to be ready using wpuser credentials
 echo "Waiting for MariaDB to be ready..."
-while ! mysqladmin ping -h mariadb --silent; do
-    sleep 1
+until mysql -h mariadb -u wpuser -ppassword -e "SELECT 1"; do
+    echo "MariaDB is unavailable - sleeping"
+    sleep 2
 done
 echo "MariaDB is ready!"
 
 # Navigate to the web root directory
 cd /var/www/html
 
-# Check if WordPress is already installed
-if [ -f wp-config.php ]; then
-    echo "WordPress is already installed. Skipping setup..."
-else
-    # Download WP-CLI
+if [ ! -f ./wp-cli.phar ]; then
     echo "Downloading WP-CLI..."
     curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
     chmod +x wp-cli.phar
+fi
 
-    # Download WordPress core files
+# Check if WordPress is already installed
+if ! ./wp-cli.phar core is-installed --allow-root; then
     echo "Downloading WordPress core..."
     ./wp-cli.phar core download --allow-root
 
-    # Create the wp-config.php file
     echo "Creating wp-config.php..."
-    ./wp-cli.phar config create --dbname=wordpress --dbuser=wpuser --dbpass=password --dbhost=mariadb --allow-root
+    ./wp-cli.phar config create \
+        --dbname=wordpress \
+        --dbuser=wpuser \
+        --dbpass=password \
+        --dbhost=mariadb \
+        --allow-root
 
-    # Install WordPress
     echo "Installing WordPress..."
-    ./wp-cli.phar core install --url=localhost --title=inception --admin_user=admin --admin_password=admin --admin_email=admin@admin.com --allow-root
+    ./wp-cli.phar core install \
+        --url=localhost \
+        --title=inception \
+        --admin_user=imane \
+        --admin_password=imane \
+        --admin_email=imane@imane.com \
+        --allow-root
+else
+    echo "WordPress is already installed. Skipping setup..."
 fi
 
 # Start PHP-FPM

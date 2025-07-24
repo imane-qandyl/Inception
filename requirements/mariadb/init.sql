@@ -1,5 +1,14 @@
 DROP DATABASE IF EXISTS wordpress;
 CREATE DATABASE wordpress;
+
+CREATE USER IF NOT EXISTS 'root'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;
+CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+
+CREATE USER IF NOT EXISTS 'wpuser'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON wordpress.* TO 'wpuser'@'localhost';
 CREATE USER IF NOT EXISTS 'wpuser'@'%' IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON wordpress.* TO 'wpuser'@'%';
+
 FLUSH PRIVILEGES;
