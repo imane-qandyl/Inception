@@ -10,9 +10,9 @@ COMPOSE_FILE = docker-compose.yml
 # Detect OS and set DATA_PATH accordingly
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Darwin)
-    DATA_PATH = /Users/$(USER)/data
+    DATA_PATH = /Users/imqandyl/Desktop/Inception/data
 else
-    DATA_PATH = /home/$(USER)/data
+    DATA_PATH = /Users/imqandyl/Desktop/Inception/data
 endif
 
 CONTAINER_NAME = nginx
@@ -24,9 +24,8 @@ all: setup build up
 setup:
 	@printf "$(GREEN)Creating data directories...$(RESET)\n"
 	@mkdir -p $(DATA_PATH)
-	@mkdir -p $(DATA_PATH)/wordpress
-	@mkdir -p $(DATA_PATH)/ssl-certs
-	@mkdir -p $(DATA_PATH)/mariadb
+	@mkdir -p $(DATA_PATH)/web
+	@mkdir -p $(DATA_PATH)/database
 	@printf "$(GREEN)Setup complete!$(RESET)\n"
 
 # Build the Docker images
@@ -54,7 +53,7 @@ clean: down
 fclean: clean
 	@printf "$(RED)Warning: Next step will delete all your website configuration, PHP files, and database data!$(RESET)\n"
 	@read -p "Do you wish to proceed? (yes/no): " choice && [ "$$choice" = "yes" ] && \
-		printf "$(RED)Removing data directories...$(RESET)\n" && sudo rm -rf $(DATA_PATH) || \
+		printf "$(RED)Removing data directories...$(RESET)\n" && rm -rf $(DATA_PATH) || \
 		printf "$(YELLOW)Aborted. No files were removed.$(RESET)\n"
 
 
