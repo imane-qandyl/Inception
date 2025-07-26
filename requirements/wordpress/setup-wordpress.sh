@@ -2,7 +2,7 @@
 
 # Wait for MariaDB to be ready using wpuser credentials
 echo "Waiting for MariaDB to be ready..."
-until mysql -h mariadb -u wpuser -ppassword -e "SELECT 1"; do
+until mysql -h "$WORDPRESS_DB_HOST" -u "$WORDPRESS_DB_USER" -p"$WORDPRESS_DB_PASSWORD" -e "SELECT 1"; do
     echo "MariaDB is unavailable - sleeping"
     sleep 2
 done
@@ -23,11 +23,11 @@ if ! ./wp-cli.phar core is-installed --allow-root; then
     ./wp-cli.phar core download --allow-root
 
     echo "Creating wp-config.php..."
-    ./wp-cli.phar config create \
-        --dbname=wordpress \
-        --dbuser=wpuser \
-        --dbpass=password \
-        --dbhost=mariadb \
+    /wp-cli.phar config create \
+        --dbname="$WORDPRESS_DB_NAME" \
+        --dbuser="$WORDPRESS_DB_USER" \
+        --dbpass="$WORDPRESS_DB_PASSWORD" \
+        --dbhost="$WORDPRESS_DB_HOST" \
         --allow-root
 
     echo "Installing WordPress..."

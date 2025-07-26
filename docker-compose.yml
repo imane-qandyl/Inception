@@ -43,11 +43,11 @@ services:
       - web-data:/var/www/html
     networks:
       - inception
-    environment: # Add environment variables for database connection
-      WORDPRESS_DB_HOST: mariadb
-      WORDPRESS_DB_USER: wpuser
-      WORDPRESS_DB_PASSWORD: password
-      WORDPRESS_DB_NAME: wordpress
+    environment:
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
 
   mariadb:
     build: requirements/mariadb/
