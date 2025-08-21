@@ -23,7 +23,7 @@ if ! ./wp-cli.phar core is-installed --allow-root; then
     ./wp-cli.phar core download --allow-root
 
     echo "Creating wp-config.php..."
-    /wp-cli.phar config create \
+    ./wp-cli.phar config create \
         --dbname="$WORDPRESS_DB_NAME" \
         --dbuser="$WORDPRESS_DB_USER" \
         --dbpass="$WORDPRESS_DB_PASSWORD" \
@@ -34,14 +34,17 @@ if ! ./wp-cli.phar core is-installed --allow-root; then
     ./wp-cli.phar core install \
         --url=localhost \
         --title=inception \
-        --admin_user=imane \
-        --admin_password=imane \
-        --admin_email=imane@imane.com \
+        --admin_user=$WORDPRESS_ADMIN_USER \
+        --admin_password=$WORDPRESS_ADMIN_PASSWORD \
+        --admin_email=$WORDPRESS_ADMIN_EMAIL \
         --allow-root
 else
     echo "WordPress is already installed. Skipping setup..."
 fi
 
+mkdir -p /run/php
+chown www-data:www-data /run/php
+
 # Start PHP-FPM
 echo "Starting PHP-FPM..."
-php-fpm8.2 -F
+php-fpm7.4 -F

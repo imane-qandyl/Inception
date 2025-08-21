@@ -1,5 +1,4 @@
-# project’s root directory
-version: "3.8"
+
 
 networks:
   inception:
@@ -10,16 +9,16 @@ volumes:
     name: mariadb-data
     driver: local
     driver_opts:
-        type: none
-        o: bind
-        device: /Users/imqandyl/Desktop/Inception/data/database
+      type: none
+      o: bind
+      device: /home/imqandyl/Desktop/Inception/data/database
   web-data:
     name: web-data
     driver: local
     driver_opts:
-        type: none
-        o: bind
-        device: /Users/imqandyl/Desktop/Inception/data/web
+      type: none
+      o: bind
+      device: /home/imqandyl/Desktop/Inception/data/web
 
 services:
   nginx:
@@ -57,7 +56,7 @@ services:
     networks:
       - inception
     environment: # Add environment variables for database setup
-      MYSQL_ROOT_PASSWORD: example_password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s

@@ -9,10 +9,11 @@ COMPOSE_FILE = docker-compose.yml
 # Data directory path (as specified in the subject)
 # Detect OS and set DATA_PATH accordingly
 UNAME_S := $(shell uname -s)
+
 ifeq ($(UNAME_S),Darwin)
-    DATA_PATH = /Users/imqandyl/Desktop/Inception/data
+	DATA_PATH = /Users/imqandyl/Desktop/Inception/data
 else
-    DATA_PATH = /Users/imqandyl/Desktop/Inception/data
+	DATA_PATH = /home/imqandyl/Desktop/Inception/data
 endif
 
 CONTAINER_NAME = nginx
