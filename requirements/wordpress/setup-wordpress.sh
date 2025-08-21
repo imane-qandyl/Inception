@@ -34,9 +34,9 @@ if ! ./wp-cli.phar core is-installed --allow-root; then
     ./wp-cli.phar core install \
         --url=localhost \
         --title=inception \
-        --admin_user=$WORDPRESS_ADMIN_USER \
-        --admin_password=$WORDPRESS_ADMIN_PASSWORD \
-        --admin_email=$WORDPRESS_ADMIN_EMAIL \
+        --admin_user="$WORDPRESS_ADMIN_USER" \
+        --admin_password="$WORDPRESS_ADMIN_PASSWORD" \
+        --admin_email="$WORDPRESS_ADMIN_EMAIL" \
         --allow-root
 else
     echo "WordPress is already installed. Skipping setup..."

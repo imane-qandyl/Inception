@@ -32,7 +32,9 @@ services:
       - inception # Ensure nginx is connected to the same network as other services
     depends_on:
       - wordpress
-  
+    env_file:
+      - .env
+
   wordpress:
     build: requirements/wordpress/
     container_name: wp-php
@@ -42,11 +44,8 @@ services:
       - web-data:/var/www/html
     networks:
       - inception
-    environment:
-      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
-      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
-      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
-      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+    env_file:
+      - .env
 
   mariadb:
     build: requirements/mariadb/
@@ -56,7 +55,7 @@ services:
     networks:
       - inception
     environment: # Add environment variables for database setup
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      - .env
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
