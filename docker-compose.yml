@@ -34,6 +34,7 @@ services:
       - wordpress
     env_file:
       - .env
+    restart: always
 
   wordpress:
     build: requirements/wordpress/
@@ -46,6 +47,7 @@ services:
       - inception
     env_file:
       - .env
+    restart: always
 
   mariadb:
     build: requirements/mariadb/
@@ -56,6 +58,7 @@ services:
       - inception
     environment: # Add environment variables for database setup
       - .env
+    restart: always
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
