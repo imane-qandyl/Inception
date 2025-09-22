@@ -1,13 +1,8 @@
-FROM debian:bullseye
+FROM debian:bookworm
 
-ENV DEBIAN_FRONTEND=noninteractive
+RUN apt update && apt upgrade && apt install -y \
+    mariadb-server
 
-# Install MariaDB server
-RUN apt update && apt upgrade -y && \
-    apt install -y mariadb-server && \
-    rm -rf /var/lib/apt/lists/*
-
-# Copy custom configuration and initialization scripts
 COPY 50-server.cnf /etc/mysql/mariadb.conf.d/
 COPY init.sql /etc/mysql/init.sql
 COPY setup-mariadb.sh /usr/local/bin/setup-mariadb.sh
@@ -19,5 +14,4 @@ RUN mkdir -p /run/mysqld /var/lib/mysql && \
 
 VOLUME ["/var/lib/mysql"]
 
-# Run the setup script
 CMD ["/usr/local/bin/setup-mariadb.sh"]
