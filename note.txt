@@ -1,2 +1,0 @@
-docker-compose updocker exec -it mariadb mysql -u root -ppassword
- iset up the mariadb manually
