@@ -4,7 +4,7 @@ RED = \033[0;31m
 RESET = \033[0m
 
 # Docker compose file path
-COMPOSE_FILE = docker-compose.yml
+COMPOSE_FILE = srcs/docker-compose.yml
 
 # Data directory path (as specified in the subject)
 # Detect OS and set DATA_PATH accordingly

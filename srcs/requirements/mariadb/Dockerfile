@@ -3,9 +3,9 @@ FROM debian:bullseye
 RUN apt update && apt upgrade -y && apt install -y \
     mariadb-server
 
-COPY 50-server.cnf /etc/mysql/mariadb.conf.d/
-COPY init.sql /etc/mysql/init.sql
-COPY setup-mariadb.sh /usr/local/bin/setup-mariadb.sh
+COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/
+COPY tools/init.sql /etc/mysql/init.sql
+COPY tools/setup-mariadb.sh /usr/local/bin/setup-mariadb.sh
 
 # Create necessary directories and set permissions
 RUN mkdir -p /run/mysqld /var/lib/mysql && \

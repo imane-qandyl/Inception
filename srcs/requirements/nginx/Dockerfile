@@ -10,6 +10,6 @@ RUN mkdir -p /etc/nginx/ssl && \
     -out /etc/nginx/ssl/imqandyl.42.fr.crt \
     -subj "/CN=imqandyl.42.fr"
 
-COPY default /etc/nginx/sites-available/default
+COPY conf/default /etc/nginx/sites-available/default
 
 CMD ["nginx", "-g", "daemon off;"]
